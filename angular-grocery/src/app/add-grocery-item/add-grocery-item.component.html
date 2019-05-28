@@ -1,20 +1,31 @@
 <h1>New Grocery Item</h1>
-<form>
+<form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+  <!-- title -->
   <div class="form-group row">
     <label for="title" class="col-3 col-form-label">Title</label>
     <div class="col">
-      <input type="text" class="form-control" id="title" placeholder="Title">
+      <input type="text" class="form-control" id="title" placeholder="Title" required formControlName="title">
     </div>
   </div>
+
+  <!-- notes -->
   <div class="form-group row">
     <label for="notes" class="col-3 col-form-label">Notes (Optional)</label>
     <div class="col">
-      <textarea name="notes" id="notes" rows="10" class="form-control" placeholder="Enter your notes here"></textarea>
+      <textarea name="notes" id="notes" rows="10" class="form-control" placeholder="Enter your notes here"
+        formControlName="notes"></textarea>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col">
+      <button type="submit" class="btn btn-primary" [disabled]="!itemForm.valid">Add to list</button>
     </div>
   </div>
   <div class="form-group row">
     <div class="col">
-      <button type="submit" class="btn btn-primary">Add to list</button>
+      <button type="button" class="btn btn-primary">Go to list</button>
+      <p>{{ itemListLength }} items in the list</p>
     </div>
   </div>
 </form>

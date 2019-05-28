@@ -4,6 +4,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var users = require('./routes/users');
+var groceryItem = require('./routes/groceryItem');
 
 var app = express();
 
@@ -19,5 +20,6 @@ app.use(function (req, res, next) {
 });
 
 app.use('/api/v1/users', users);
+app.use('/api/v1/groceryItem', groceryItem);
 
 module.exports = app;
