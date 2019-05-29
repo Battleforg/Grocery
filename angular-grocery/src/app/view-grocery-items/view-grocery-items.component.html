@@ -1,0 +1,21 @@
+<legend>Grocery Items</legend>
+<div class="row">
+  <div class="col">
+    <p>You have {{ itemList.length }} item(s) in your list.</p>
+  </div>
+</div>
+
+<div class="row items">
+  <div class="col">
+    <div class="list-group">
+      <a routerLink="/itemDeatil/{{ item.gid }}" *ngFor="let item of itemList"
+       class="list-group-item list-group-item-action">{{ item.title }}</a>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <button type="button" class="btn btn-success" (click)="goBack()">Go Back</button>
+  </div>
+</div>

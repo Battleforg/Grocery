@@ -3,18 +3,20 @@ let Validator = require('fastest-validator');
 
 // In memory data storage
 let groceryList = [];
+let counter = 0;
 
 let groceryValidator = new Validator();
 
 // const validator schema
 const grocerySchema = {
-  title: { type: 'string', min: 1}
+  title: { type: 'string', min: 5}
 };
 
 class GroceryService {
   /**
-   * add a new grocery item into grocery list
+   * Add a new grocery item into grocery list
    * @param {*} data the grocery item to be added
+   * @returns length of grocery list
    */
   static add(data) {
 
@@ -31,16 +33,39 @@ class GroceryService {
       throw {
         name: 'ValidationError',
         message: errors
-      }
+      };
     }
 
     // validation success
-    let groceryItem = new GroceryItem(data.title, data.notes);
+    let groceryItem = new GroceryItem('g' + counter++, data.title, data.notes);
     // mock database operation
     groceryList.push(groceryItem);
 
     return groceryList.length;
     
+  }
+
+  /**
+   * Get all grocery items in the list
+   * @returns the grocery list
+   */
+  static retrieveAll() {
+    return groceryList;
+  }
+
+  /**
+   * Get one grocery item by gid
+   * @param {*} gid the id of retrieved grocery item
+   */
+  static retrieveOne(gid) {
+ 
+    const foundItem = groceryList.find(elememt => elememt.gid === gid);
+
+    if (foundItem === undefined) {
+      throw new Error('Unable to retrieve a grocery by(gid:' + gid + ')');
+    }
+
+    return foundItem;
   }
 }
 

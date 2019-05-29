@@ -1,5 +1,6 @@
 class GroceryItemModel {
-  constructor(title, notes) {
+  constructor(gid, title, notes) {
+    this.gid = gid;
     this.title = title;
     this.notes = notes;
   }

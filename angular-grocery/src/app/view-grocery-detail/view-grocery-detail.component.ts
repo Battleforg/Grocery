@@ -1,24 +1,23 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { GroceryItem } from '../entities/grocery-item';
-import { Subject } from 'rxjs';
 import { GroceryItemService } from '../services/grocery-item.service';
+import { Subject } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { GroceryItem } from '../entities/grocery-item';
 
 @Component({
-  selector: 'app-add-grocery-item',
-  templateUrl: './add-grocery-item.component.html',
-  styleUrls: ['./add-grocery-item.component.css']
+  selector: 'app-view-grocery-detail',
+  templateUrl: './view-grocery-detail.component.html',
+  styleUrls: ['./view-grocery-detail.component.css']
 })
-export class AddGroceryItemComponent implements OnDestroy, OnInit {
+export class ViewGroceryDetailComponent implements OnInit, OnDestroy {
+
   // reactive form control
   itemForm = this.fb.group({
     title: ['', Validators.required],
     notes: ['']
   });
-
-  itemListLength = 0;
 
   serverErrors: any = {};
 
@@ -26,16 +25,20 @@ export class AddGroceryItemComponent implements OnDestroy, OnInit {
   private unsubscribe$ = new Subject<void>();
 
   constructor(
-    private fb: FormBuilder,
     private groceryItemService: GroceryItemService,
-    private router: Router
+    private fb: FormBuilder,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
-    this.groceryItemService.getAllItems()
+    const gid = this.route.snapshot.paramMap.get('gid');
+    this.groceryItemService.getItemById(gid)
     .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(items => {
-      this.itemListLength = items.list.length;
+    .subscribe(response => {
+      this.itemForm.patchValue({
+        title: response.grocery.title,
+        notes: response.grocery.notes
+      });
     });
   }
 
@@ -48,16 +51,11 @@ export class AddGroceryItemComponent implements OnDestroy, OnInit {
     return this.serverErrors.title !== undefined;
   }
 
-  goViewItemList(): void {
-    this.router.navigate(['viewItems']);
-  }
-
   onSubmit() {
     const newGroceryItem = new GroceryItem(this.itemForm.value.title, this.itemForm.value.notes);
     this.groceryItemService.addItem(newGroceryItem)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(response => {
-        this.itemListLength = response.groceryListLength;
         this.serverErrors = {};
       }, error => {
         this.serverErrors = error.error.error;

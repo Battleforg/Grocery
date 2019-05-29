@@ -6,11 +6,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AddGroceryItemComponent } from './add-grocery-item/add-grocery-item.component';
 import { AppRoutingModule } from './app-routing.module';
+import { ViewGroceryItemsComponent } from './view-grocery-items/view-grocery-items.component';
+import { ViewGroceryDetailComponent } from './view-grocery-detail/view-grocery-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AddGroceryItemComponent
+    AddGroceryItemComponent,
+    ViewGroceryItemsComponent,
+    ViewGroceryDetailComponent
   ],
   imports: [
     BrowserModule,

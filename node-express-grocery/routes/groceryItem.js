@@ -2,7 +2,10 @@ var express = require('express');
 var router = express.Router();
 var GroceryService = require('../services/grocery.service');
 
-router.post('/', async function (req, res, next) {
+/**
+ * add a new item to the list
+ */
+router.post('/', async (req, res, next) => {
   const body = req.body;
 
   try {
@@ -11,9 +14,36 @@ router.post('/', async function (req, res, next) {
     return res.status(201).json({ groceryListLength: groceryListLength });
   } catch (error) {
     if (error.name === 'ValidationError') {
-      return res.status(400).json({ error: error.messsage });
+      return res.status(400).json({ error: error.message });
     }
+
+    // unexpected error
+    return next(error);
   }
 });
+
+router.get('/:id', async (req, res, next) => {
+  try {
+    const grocery = await GroceryService.retrieveOne(req.params.id);
+
+    return res.json({ grocery: grocery });
+  } catch (error) {
+    // unexpected error
+    return next(error);
+  }
+});
+
+router.get('/', async (req, res, next) => {
+  try {
+    const groceryList = await GroceryService.retrieveAll();
+
+    return res.json({ list: groceryList });
+  } catch (error) {
+    // unexpected error
+    return next(error);
+  }
+});
+
+
 
 module.exports = router;

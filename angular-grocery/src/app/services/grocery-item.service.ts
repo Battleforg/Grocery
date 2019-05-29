@@ -14,12 +14,27 @@ export class GroceryItemService {
     private http: HttpClient
   ) { }
 
-  // add a grocery item to list
+  /**
+   * Add a grocery item to a list
+   * @param newItem the item to be added into the list
+   */
   addItem(newItem: object): Observable<any> {
-    return this.http.post(this.serverUrl + 'groceryItem', newItem).pipe(
-      catchError(this.handleError<object>('add a new item', {}))
+    return this.http.post(this.serverUrl + 'groceryItem', newItem);
+  }
+
+  /**
+   * Get all items in a list
+   */
+  getAllItems(): Observable<any> {
+    return this.http.get(this.serverUrl + 'groceryItem');
+  }
+
+  getItemById(id: string): Observable<any> {
+    return this.http.get(`${this.serverUrl}groceryItem/${id}`).pipe(
+      catchError(this.handleError(`Get a grocery item id=${id}`))
     );
   }
+
 
   /**
    * Handle Http operation that failed.
