@@ -1,34 +1,66 @@
-<legend>Grocery Detail</legend>
-<form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
-  <!-- title -->
-  <div class="form-group row">
-    <label for="title" class="col-3 col-form-label">Title</label>
+<legend>
+  <button type="button" class="btn btn-primary" (click)="goBack()">
+    Back
+  </button>
+  Grocery Detail
+</legend>
+<div *ngIf="isEdit">
+  <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+    <!-- title -->
+    <div class="form-group row">
+      <label for="title" class="col-3 col-form-label">Title</label>
+      <div class="col">
+        <input type="text" class="form-control" id="title" placeholder="Title" required formControlName="title"
+          readonly>
+        <div [hidden]="!invalidTitle()" class="alert alert-danger">
+          <p>{{ this.serverErrors.title }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- notes -->
+    <div class="form-group row">
+      <label for="notes" class="col-3 col-form-label">Notes (Optional)</label>
+      <div class="col">
+        <textarea name="notes" id="notes" rows="10" class="form-control" placeholder="Enter your notes here"
+          formControlName="notes" readonly></textarea>
+      </div>
+    </div>
+
+    <div class="form-group row">
+
+      <div class="col" *ngIf="true">
+        <button type="submit" class="btn btn-primary" [disabled]="!itemForm.valid">Save changes</button>
+      </div>
+    </div>
+  </form>
+</div>
+<div *ngIf="!isEdit">
+  <div class="row">
+    <div class="col-3">
+      <p>Title</p>
+    </div>
     <div class="col">
-      <input type="text" class="form-control" id="title" placeholder="Title" required formControlName="title" readonly>
-      <div [hidden]="!invalidTitle()" class="alert alert-danger">
-        <p>{{ this.serverErrors.title }}</p>
+      <p>{{ itemForm.value.title }}</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-3">
+      <p>Notes</p>
+    </div>
+    <div class="col">
+      <p>{{ itemForm.value.notes }}</p>
+    </div>
+  </div>
+  <div [hidden]="isDeleteSuccess" class="alert alert-danger">
+    Cannot delete this item.
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-primary">Edit</button>
+        <button type="button" class="btn btn-danger" (click)="deleteItem()">Delete</button>
       </div>
     </div>
   </div>
-
-  <!-- notes -->
-  <div class="form-group row">
-    <label for="notes" class="col-3 col-form-label">Notes (Optional)</label>
-    <div class="col">
-      <textarea name="notes" id="notes" rows="10" class="form-control" placeholder="Enter your notes here"
-        formControlName="notes" readonly></textarea>
-    </div>
-  </div>
-
-  <div class="form-group row">
-    <div class="col" *ngIf="true">
-      <button type="button" class="btn btn-primary">Edit</button>
-    </div>
-    <div class="col" *ngIf="true">
-      <button type="submit" class="btn btn-primary" [disabled]="!itemForm.valid">Save changes</button>
-    </div>
-    <div class="col">
-      <button type="button" class="btn btn-danger">Delete</button>
-    </div>
-  </div>
-</form>
+</div>

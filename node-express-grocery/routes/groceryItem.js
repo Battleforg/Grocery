@@ -22,6 +22,9 @@ router.post('/', async (req, res, next) => {
   }
 });
 
+/**
+ * Get an item by its id
+ */
 router.get('/:id', async (req, res, next) => {
   try {
     const grocery = await GroceryService.retrieveOne(req.params.id);
@@ -33,6 +36,9 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
+/**
+ * Get all items in the list
+ */
 router.get('/', async (req, res, next) => {
   try {
     const groceryList = await GroceryService.retrieveAll();
@@ -44,6 +50,14 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const result = await GroceryService.delete(req.params.id);
+    return res.json({ success: result });
+  } catch (error) {
+    // unexpected error
+    return next(error);
+  }
+});
 
 module.exports = router;

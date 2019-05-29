@@ -37,7 +37,8 @@ class GroceryService {
     }
 
     // validation success
-    let groceryItem = new GroceryItem('g' + counter++, data.title, data.notes);
+    const groceryItem = new GroceryItem('g' + counter++, data.title, data.notes);
+  
     // mock database operation
     groceryList.push(groceryItem);
 
@@ -66,6 +67,21 @@ class GroceryService {
     }
 
     return foundItem;
+  }
+
+  /**
+   * Delete an item by its id
+   * @param {*} gid the id of item to be deleted
+   */
+  static delete(gid) {
+    const foundItemIndex = groceryList.findIndex(elememt => elememt.gid === gid);
+
+    if (foundItemIndex === -1) {
+      return false;
+    }
+
+    groceryList.splice(foundItemIndex, 1);
+    return true;
   }
 }
 

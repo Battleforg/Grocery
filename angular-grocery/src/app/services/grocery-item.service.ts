@@ -29,9 +29,19 @@ export class GroceryItemService {
     return this.http.get(this.serverUrl + 'groceryItem');
   }
 
+  /**
+   * Get an item by its id
+   * @param id the id of the needed item
+   */
   getItemById(id: string): Observable<any> {
     return this.http.get(`${this.serverUrl}groceryItem/${id}`).pipe(
       catchError(this.handleError(`Get a grocery item id=${id}`))
+    );
+  }
+
+  deleteItemById(id: string): Observable<any> {
+    return this.http.delete(`${this.serverUrl}groceryItem/${id}`).pipe(
+      catchError(this.handleError(`Cannot delete item id=${id}`))
     );
   }
 
