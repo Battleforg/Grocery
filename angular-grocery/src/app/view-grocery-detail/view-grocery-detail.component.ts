@@ -60,6 +60,10 @@ export class ViewGroceryDetailComponent implements OnInit, OnDestroy {
     this.router.navigate(['viewItems']);
   }
 
+  editItem() {
+    this.router.navigate(['editItem']);
+  }
+
   /**
    * Delete this item form the list
    */
