@@ -21,6 +21,7 @@ export class ViewGroceryDetailComponent implements OnInit, OnDestroy {
 
   serverErrors: any = {};
   isDeleteSuccess = true;
+  isEdit = false;
 
   // unsubscribe all subsrciption in this component
   private unsubscribe$ = new Subject<void>();
@@ -60,9 +61,11 @@ export class ViewGroceryDetailComponent implements OnInit, OnDestroy {
     this.router.navigate(['viewItems']);
   }
 
+
   editItem() {
-    this.router.navigate(['editItem']);
+    this.isEdit = true;
   }
+
 
   /**
    * Delete this item form the list
@@ -86,14 +89,20 @@ export class ViewGroceryDetailComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    const newGroceryItem = new GroceryItem(this.itemForm.value.title, this.itemForm.value.notes);
+    // reset edit state to view
+    this.isEdit = false;
+
+
+    // update changes TODO!
+    
+    /*const newGroceryItem = new GroceryItem(this.itemForm.value.title, this.itemForm.value.notes);
     this.groceryItemService.addItem(newGroceryItem)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(response => {
         this.serverErrors = {};
       }, error => {
         this.serverErrors = error.error.error;
-      });
+      });*/
   }
 
 }
